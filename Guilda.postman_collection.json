@@ -1,0 +1,630 @@
+{
+  "info": {
+    "_postman_id": "b2b7e2c7-0b2b-4d3d-8c85-4ce899642f2b",
+    "name": "Guilda - API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080"
+    }
+  ],
+  "item": [
+    {
+      "name": "Aventureiros",
+      "item": [
+        {
+          "name": "Buscar aventureiro (detalhado) por id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/aventureiros/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "aventureiros",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Criar aventureiro",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"organizacaoId\": 1,\n  \"usuarioResponsavelId\": 1,\n  \"aventureiro\": {\n    \"nome\": \"Aragorn\",\n    \"classe\": \"GUERREIRO\",\n    \"nivel\": 5\n  }\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/aventureiros",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "aventureiros"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Atualizar aventureiro",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Aragorn Elessar\",\n  \"classe\": \"GUERREIRO\",\n  \"nivel\": 6\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/aventureiros/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "aventureiros",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Recrutar (reativar) aventureiro",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/aventureiros/1/recrutar",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "aventureiros",
+                "1",
+                "recrutar"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Adicionar/atualizar companheiro do aventureiro",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Sombra\",\n  \"especie\": \"LOBO\",\n  \"lealdade\": 80\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/aventureiros/1/companheiro",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "aventureiros",
+                "1",
+                "companheiro"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Remover companheiro do aventureiro",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/aventureiros/1/companheiro",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "aventureiros",
+                "1",
+                "companheiro"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Listar aventureiros (com filtros)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/aventureiros?ativo=true&classe=GUERREIRO&nivelMinimo=1&page=0&size=10&sortBy=id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "aventureiros"
+              ],
+              "query": [
+                { "key": "ativo", "value": "true", "description": "Opcional (Boolean)" },
+                { "key": "classe", "value": "GUERREIRO", "description": "Opcional (enum ClasseAventureiro)" },
+                { "key": "nivelMinimo", "value": "1", "description": "Opcional (Integer)" },
+                { "key": "page", "value": "0", "description": "Default 0" },
+                { "key": "size", "value": "10", "description": "Default 10" },
+                { "key": "sortBy", "value": "id", "description": "Default id" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Buscar aventureiros por nome",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/aventureiros/busca?nome=Aragorn&page=0&size=10",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "aventureiros",
+                "busca"
+              ],
+              "query": [
+                { "key": "nome", "value": "Aragorn", "description": "Obrigatório" },
+                { "key": "page", "value": "0", "description": "Default 0" },
+                { "key": "size", "value": "10", "description": "Default 10" }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Missões",
+      "item": [
+        {
+          "name": "Criar missão",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"organizacaoId\": 1,\n  \"titulo\": \"Caçar o dragão\",\n  \"nivelPerigo\": \"ALTO\",\n  \"status\": \"PLANEJADA\",\n  \"dataInicio\": \"2026-04-13T12:00:00Z\",\n  \"dataTermino\": null\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/missoes",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "missoes"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Deletar missão",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/missoes/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "missoes",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Remover participação (missão x aventureiro)",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/missoes/1/participacoes/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "missoes",
+                "1",
+                "participacoes",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Listar missões (com filtros)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/missoes?status=PLANEJADA&perigo=MEDIO&inicio=2026-01-01T00:00:00Z&termino=2026-12-31T23:59:59Z&page=0&size=10",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "missoes"
+              ],
+              "query": [
+                { "key": "status", "value": "PLANEJADA", "description": "Opcional (enum StatusMissao)" },
+                { "key": "perigo", "value": "MEDIO", "description": "Opcional (enum NivelPerigo)" },
+                { "key": "inicio", "value": "2026-01-01T00:00:00Z", "description": "Opcional (ISO_DATE_TIME / OffsetDateTime)" },
+                { "key": "termino", "value": "2026-12-31T23:59:59Z", "description": "Opcional (ISO_DATE_TIME / OffsetDateTime)" },
+                { "key": "page", "value": "0", "description": "Default 0" },
+                { "key": "size", "value": "10", "description": "Default 10" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Buscar missão por id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/missoes/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "missoes",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Relatório de missões (métricas)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/missoes/relatorio?inicio=2026-01-01T00:00:00Z&termino=2026-12-31T23:59:59Z&page=0&size=10",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "missoes",
+                "relatorio"
+              ],
+              "query": [
+                { "key": "inicio", "value": "2026-01-01T00:00:00Z", "description": "Opcional (ISO_DATE_TIME / OffsetDateTime)" },
+                { "key": "termino", "value": "2026-12-31T23:59:59Z", "description": "Opcional (ISO_DATE_TIME / OffsetDateTime)" },
+                { "key": "page", "value": "0", "description": "Default 0" },
+                { "key": "size", "value": "10", "description": "Default 10" }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Painel tático",
+      "item": [
+        {
+          "name": "Top missões dos últimos 15 dias (cacheado)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/missoes/top15dias",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "missoes",
+                "top15dias"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Participações",
+      "item": [
+        {
+          "name": "Registrar participação em missão",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"missaoId\": 1,\n  \"aventureiroId\": 1,\n  \"papel\": \"LIDER\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/participacoes",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "participacoes"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Marketplace (Elasticsearch)",
+      "item": [
+        {
+          "name": "Buscar por nome",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/produtos/busca/nome?termo=espada",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "produtos",
+                "busca",
+                "nome"
+              ],
+              "query": [
+                { "key": "termo", "value": "espada" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Buscar por descrição",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/produtos/busca/descricao?termo=lendaria",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "produtos",
+                "busca",
+                "descricao"
+              ],
+              "query": [
+                { "key": "termo", "value": "lendaria" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Buscar frase exata (descrição)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/produtos/busca/frase?termo=forjada%20em%20fogo%20draconico",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "produtos",
+                "busca",
+                "frase"
+              ],
+              "query": [
+                { "key": "termo", "value": "forjada em fogo draconico" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Buscar fuzzy (nome)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/produtos/busca/fuzzy?termo=esapda",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "produtos",
+                "busca",
+                "fuzzy"
+              ],
+              "query": [
+                { "key": "termo", "value": "esapda" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Buscar multi-campos (nome + descrição)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/produtos/busca/multicampos?termo=poção",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "produtos",
+                "busca",
+                "multicampos"
+              ],
+              "query": [
+                { "key": "termo", "value": "poção" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Buscar com filtro (categoria)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/produtos/busca/com-filtro?termo=raro&categoria=Armas",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "produtos",
+                "busca",
+                "com-filtro"
+              ],
+              "query": [
+                { "key": "termo", "value": "raro" },
+                { "key": "categoria", "value": "Armas" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Buscar por faixa de preço",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/produtos/busca/faixa-preco?min=10&max=100",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "produtos",
+                "busca",
+                "faixa-preco"
+              ],
+              "query": [
+                { "key": "min", "value": "10" },
+                { "key": "max", "value": "100" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Busca avançada (categoria + raridade + preço)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/produtos/busca/avancada?categoria=Armas&raridade=EPICA&min=100&max=1000",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "produtos",
+                "busca",
+                "avancada"
+              ],
+              "query": [
+                { "key": "categoria", "value": "Armas" },
+                { "key": "raridade", "value": "EPICA" },
+                { "key": "min", "value": "100" },
+                { "key": "max", "value": "1000" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Agregação: por categoria",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/produtos/agregacoes/por-categoria",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "produtos",
+                "agregacoes",
+                "por-categoria"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Agregação: por raridade",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/produtos/agregacoes/por-raridade",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "produtos",
+                "agregacoes",
+                "por-raridade"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Agregação: preço médio",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/produtos/agregacoes/preco-medio",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "produtos",
+                "agregacoes",
+                "preco-medio"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Agregação: faixas de preço",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/produtos/agregacoes/faixas-preco",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "produtos",
+                "agregacoes",
+                "faixas-preco"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
+
