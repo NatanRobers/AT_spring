@@ -34,17 +34,15 @@ public class MarketplaceElasticsearchSetup {
                         .mappings(m -> m
                                 .properties("nome", Property.of(p -> p.text(t -> t)))
                                 .properties("descricao", Property.of(p -> p.text(t -> t)))
-                                // Adicionando subcampo keyword para não quebrar as suas agregações
                                 .properties("categoria", Property.of(p -> p.text(t -> t.fields("keyword", k -> k.keyword(kk -> kk)))))
                                 .properties("raridade", Property.of(p -> p.text(t -> t.fields("keyword", k -> k.keyword(kk -> kk)))))
-                                // Preço convertido para lidar com BigDecimal com segurança
                                 .properties("preco", Property.of(p -> p.scaledFloat(sf -> sf.scalingFactor(100.0))))
                         ));
-                log.info("Índice Elasticsearch '{}' criado com mapeamento explícito e melhorado.", MarketplaceIndexConstants.INDEX);
+                log.info("Índice Elasticsearch '{}' criado.", MarketplaceIndexConstants.INDEX);
             }
             seedIfEmpty();
         } catch (Exception e) {
-            log.warn("Não foi possível preparar o índice do marketplace no Elasticsearch: {}", e.getMessage());
+            log.warn("Erro no índice do marketplace no Elasticsearch: {}", e.getMessage());
         }
     }
 

@@ -13,6 +13,7 @@ import com.guilda.registro.repository.AventureiroRepository;
 import com.guilda.registro.repository.AventureiroSpecifications;
 import com.guilda.registro.repository.OrganizacaoRepository;
 import com.guilda.registro.repository.UsuarioRepository;
+import com.guilda.registro.exception.RecursoNaoEncontradoException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -52,10 +53,10 @@ public class AventureiroService {
     @Transactional
     public AventureiroDetalhadoResponse criar(AventureiroCreateRequest request) {
         var org = organizacaoRepository.findById(request.organizacaoId())
-                .orElseThrow(() -> new RuntimeException("Organização não encontrada"));
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Organização não encontrada"));
 
         var usuario = usuarioRepository.findById(request.usuarioResponsavelId())
-                .orElseThrow(() -> new RuntimeException("Usuário responsável não encontrado"));
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Usuário responsável não encontrado"));
 
         AventureiroRequest aReq = request.aventureiro();
 
@@ -73,7 +74,7 @@ public class AventureiroService {
     @Transactional
     public AventureiroDetalhadoResponse atualizar(Long id, AventureiroRequest request) {
         Aventureiro a = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Aventureiro não encontrado"));
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Aventureiro não encontrado"));
 
         a.setNome(request.nome());
         a.setClasse(request.classe());
@@ -85,7 +86,7 @@ public class AventureiroService {
     @Transactional
     public AventureiroDetalhadoResponse recrutar(Long id) {
         Aventureiro a = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Aventureiro não encontrado"));
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Aventureiro não encontrado"));
         a.setAtivo(true);
         return mapper.toDetalhadoResponse(repository.save(a));
     }
@@ -93,7 +94,7 @@ public class AventureiroService {
     @Transactional
     public AventureiroDetalhadoResponse adicionarCompanheiro(Long aventureiroId, CompanheiroRequest request) {
         Aventureiro a = repository.findById(aventureiroId)
-                .orElseThrow(() -> new RuntimeException("Aventureiro não encontrado"));
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Aventureiro não encontrado"));
 
         Companheiro c = a.getCompanheiro();
         if (c == null) {
@@ -113,14 +114,14 @@ public class AventureiroService {
     @Transactional
     public void removerCompanheiro(Long aventureiroId) {
         Aventureiro a = repository.findById(aventureiroId)
-                .orElseThrow(() -> new RuntimeException("Aventureiro não encontrado"));
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Aventureiro não encontrado"));
         a.setCompanheiro(null);
         repository.save(a);
     }
 
     public AventureiroDetalhadoResponse buscarDetalhado(Long id) {
         Aventureiro a = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Aventureiro não encontrado"));
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Aventureiro não encontrado"));
         return mapper.toDetalhadoResponse(a);
     }
 }

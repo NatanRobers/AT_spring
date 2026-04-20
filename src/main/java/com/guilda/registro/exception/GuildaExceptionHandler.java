@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -40,5 +41,11 @@ public class GuildaExceptionHandler {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErroResponse handleNotFound(RecursoNaoEncontradoException ex) {
         return new ErroResponse("Recurso não encontrado", List.of(ex.getMessage()));
+    }
+
+    @ExceptionHandler(IOException.class)
+    @ResponseStatus(HttpStatus.SERVICE_UNAVAILABLE)
+    public ErroResponse handleElasticsearch(IOException ex) {
+        return new ErroResponse("Serviço de busca indisponível", List.of(ex.getMessage()));
     }
 }

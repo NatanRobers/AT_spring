@@ -14,6 +14,6 @@ class GuildaApplicationTests {
 
     @Test
     void testarRelatorioGerencial() {
-        missaoRepository.gerarRelatorioMétricas(null, null, PageRequest.of(0, 10));
+        missaoRepository.gerarRelatorioMetricas(null, null, PageRequest.of(0, 10));
     }
 }

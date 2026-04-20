@@ -11,6 +11,7 @@ import com.guilda.registro.repository.MissaoRepository;
 import com.guilda.registro.repository.MissaoSpecifications;
 import com.guilda.registro.repository.OrganizacaoRepository;
 import com.guilda.registro.repository.ParticipacaoMissaoRepository;
+import com.guilda.registro.exception.RecursoNaoEncontradoException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -45,18 +46,18 @@ public class MissaoService {
 
     public MissaoDetalhadaResponse buscarPorId(Long id) {
         Missao missao = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Missão não encontrada"));
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Missão não encontrada"));
         return mapper.toDetalhadaResponse(missao);
     }
 
     public Page<MissaoRepository.RelatorioMissaoDTO> gerarRelatorioMetricas(OffsetDateTime inicio, OffsetDateTime termino, Pageable pageable) {
-        return repository.gerarRelatorioMétricas(inicio, termino, pageable);
+        return repository.gerarRelatorioMetricas(inicio, termino, pageable);
     }
 
     @Transactional
     public MissaoDetalhadaResponse criar(MissaoCreateRequest request) {
         var org = organizacaoRepository.findById(request.organizacaoId())
-                .orElseThrow(() -> new RuntimeException("Organização não encontrada"));
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Organização não encontrada"));
 
         Missao m = new Missao();
         m.setOrganizacao(org);
@@ -73,7 +74,7 @@ public class MissaoService {
     @Transactional
     public void deletar(Long id) {
         if (!repository.existsById(id)) {
-            throw new RuntimeException("Missão não encontrada");
+            throw new RecursoNaoEncontradoException("Missão não encontrada");
         }
         repository.deleteById(id);
     }

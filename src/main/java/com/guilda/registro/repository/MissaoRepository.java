@@ -14,7 +14,6 @@ import java.time.OffsetDateTime;
 @Repository
 public interface MissaoRepository extends JpaRepository<Missao, Long>, JpaSpecificationExecutor<Missao> {
 
-    // JPQL gigante de filtros removido! Usaremos Specification.
 
     interface RelatorioMissaoDTO {
         String getTitulo();
@@ -24,16 +23,20 @@ public interface MissaoRepository extends JpaRepository<Missao, Long>, JpaSpecif
         Double getTotalRecompensas();
     }
 
-    @Query("SELECT m.titulo as titulo, " +
-            "CAST(m.status AS string) as status, " +
-            "CAST(m.nivelPerigo AS string) as nivelPerigo, " +
-            "COUNT(p.aventureiro) as quantidadeParticipantes, " +
-            "COALESCE(SUM(p.recompensaOuro), 0) as totalRecompensas " +
-            "FROM Missao m LEFT JOIN ParticipacaoMissao p ON m.id = p.missao.id " +
-            "WHERE (cast(:inicio as timestamp) IS NULL OR m.dataInicio >= :inicio) AND " +
-            "(cast(:termino as timestamp) IS NULL OR m.dataTermino <= :termino) " +
-            "GROUP BY m.id, m.titulo, m.status, m.nivelPerigo")
-    Page<RelatorioMissaoDTO> gerarRelatorioMétricas(
+    @Query("""
+             SELECT m.titulo as titulo,
+               m.status as status,
+               m.nivelPerigo as nivelPerigo,
+               COUNT(p) as quantidadeParticipantes,
+               COALESCE(SUM(p.recompensaOuro), 0) as totalRecompensas
+             FROM Missao m
+             LEFT JOIN ParticipacaoMissao p ON m.id = p.missao.id
+             WHERE (CAST(:inicio AS timestamp) IS NULL OR m.dataInicio >= :inicio)
+             AND   (CAST(:termino AS timestamp) IS NULL OR m.dataTermino <= :termino)
+             GROUP BY m.id, m.titulo, m.status, m.nivelPerigo 
+           """)
+
+    Page<RelatorioMissaoDTO> gerarRelatorioMetricas(
             @Param("inicio") OffsetDateTime inicio,
             @Param("termino") OffsetDateTime termino,
             Pageable pageable);
